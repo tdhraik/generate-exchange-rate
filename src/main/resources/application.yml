@@ -1,0 +1,23 @@
+server:
+  port: 8193
+
+coinlayer.exchange-rate:
+  access-key: 49e87ef90395432aa9694f2bbefbbde8 # 49631900db01ffefd3a8227c3fc64b4d
+  latest: http://api.coinlayer.com/api/live
+  historical: http://api.coinlayer.com/api/
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    exchange:
+      rate:
+        topic:
+          latest: exchange_rate_latest
+          historic: exchange_rate_historic
+
+cron:
+  job:
+    exchange:
+      rate:
+        latest: 0 */10 0 * * * # runs every 10 minute
+        historic: 0 0 3 * * ?  # runs at 3 AM every day
