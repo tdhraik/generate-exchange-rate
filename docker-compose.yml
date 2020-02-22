@@ -38,7 +38,7 @@ services:
     restart: always
 
   generate-exchange-rate:
-    image: generate-exchange-rate
+    image: tarundhraik/generate-exchange-rate-service
     container_name: generate-exchange-rate
     ports:
       - 8193:8193
@@ -47,7 +47,7 @@ services:
     restart: always
 
   get-exchange-rate:
-    image: get-exchange-rate
+    image: tarundhraik/get-exchange-rate-service
     container_name: get-exchange-rate
     ports:
       - 8192:8192
