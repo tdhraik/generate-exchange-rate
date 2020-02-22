@@ -7,4 +7,5 @@ RUN mvn package
 FROM java:8
 WORKDIR /app
 COPY --from=MAVEN_BUILD /build/target/generate-exchange-rate-0.1.jar /app/
+EXPOSE 8193
 ENTRYPOINT ["java", "-jar", "generate-exchange-rate-0.1.jar"]

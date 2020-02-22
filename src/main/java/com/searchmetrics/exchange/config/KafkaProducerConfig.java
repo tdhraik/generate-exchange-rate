@@ -23,7 +23,7 @@ public class KafkaProducerConfig {
     @Bean
     public ProducerFactory<String, String> producerFactory() {
         Map<String, Object> properties = new HashMap<>();
-        System.out.println(bootstrapAddress);
+        System.out.println("BOOTSRAP ADDRESSES - " + bootstrapAddress);
         properties.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 bootstrapAddress);

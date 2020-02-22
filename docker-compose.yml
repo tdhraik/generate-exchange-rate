@@ -4,6 +4,7 @@ version: '3'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -15,39 +16,42 @@ services:
       - zookeeper
     ports:
       - 9092:9092
+      - 29092:29092
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: PLAINTEXT://kafka:29092, GET_EXCHANGE_RATE://kafka:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,GET_EXCHANGE_RATE://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,GET_EXCHANGE_RATE:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: SERVICES://kafka:29092,GET_EXCHANGE_RATE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: SERVICES:PLAINTEXT,GET_EXCHANGE_RATE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: SERVICES
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   mongodb:
     image: mongo:latest
-    container_name: "mongodb"
+    container_name: mongodb
     environment:
-    - MONGO_DATA_DIR=/data/db
-    - MONGO_LOG_DIR=/dev/null
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
     volumes:
-    - ./data/db:/data/db
+      - ./data/db:/data/db
     ports:
-    - 27017:27017
+      - 27017:27017
+    restart: always
 
   generate-exchange-rate:
-    image: tarundhraik/generate-exchange-rate-service:latest
-    container_name: generate-exchange-rate-service
+    image: generate-exchange-rate
+    container_name: generate-exchange-rate
     ports:
       - 8193:8193
     depends_on:
       - kafka
+    restart: always
 
   get-exchange-rate:
-    image: tarundhraik/get-exchange-rate-service:latest
-    container_name: get-exchange-rate-service
+    image: get-exchange-rate
+    container_name: get-exchange-rate
     ports:
       - 8192:8192
     depends_on:
       - kafka
       - mongodb
+      - generate-exchange-rate
