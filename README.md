@@ -9,6 +9,8 @@
 
 This service is a type of command service [CQRS]
 
+- On startup the application calls external exchange rate api to fetch historical rates for the last 30 days.
+
 - Fetches the exchange rates from external api (http://api.coinlayer.com/api) for latest time and historical dates as well.
   This api (in free version) doesn't take a range of date (for historical usecase) as parameter instead takes one date and return the exchange rate on
   that day.

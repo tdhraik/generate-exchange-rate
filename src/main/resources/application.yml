@@ -2,7 +2,7 @@ server:
   port: 8193
 
 coinlayer.exchange-rate:
-  access-key: 49631900db01ffefd3a8227c3fc64b4d
+  access-key: 49631900db01ffefd3a8227c3fc64b4d   # 0ea2a489cc2289721df9337b2da7781b ( spare access key )
   latest: http://api.coinlayer.com/api/live
   historical: http://api.coinlayer.com/api/
 

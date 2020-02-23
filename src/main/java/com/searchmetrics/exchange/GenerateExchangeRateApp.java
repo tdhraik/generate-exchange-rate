@@ -23,7 +23,7 @@ public class GenerateExchangeRateApp {
     // TODO: remove once initial historical data is fetched
     @PostConstruct
     public void getHistoricRates() {
-        for(long i=1; i<=1; i++) {
+        for(long i=1; i<=30; i++) {
                 job.getHistoricalRateForGivenDate(LocalDate.now(ZoneId.of("Europe/Berlin")).minus(i, ChronoUnit.DAYS));
         }
     }
