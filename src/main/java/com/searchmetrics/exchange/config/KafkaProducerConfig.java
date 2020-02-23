@@ -2,6 +2,8 @@ package com.searchmetrics.exchange.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,13 +19,15 @@ import java.util.Map;
 @EnableKafka
 public class KafkaProducerConfig {
 
+    private static final Logger log = LoggerFactory.getLogger(KafkaProducerConfig.class);
+
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
     @Bean
     public ProducerFactory<String, String> producerFactory() {
         Map<String, Object> properties = new HashMap<>();
-        System.out.println("BOOTSRAP ADDRESSES - " + bootstrapAddress);
+        log.info("KAFKA BOOTSTRAP ADDRESSES - {}", bootstrapAddress);
         properties.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 bootstrapAddress);

@@ -4,7 +4,6 @@ import com.searchmetrics.exchange.job.HistoricalExchangeRateJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
@@ -12,7 +11,6 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 @SpringBootApplication
-@EnableScheduling
 public class GenerateExchangeRateApp {
 
     @Autowired
@@ -22,10 +20,10 @@ public class GenerateExchangeRateApp {
         SpringApplication.run(GenerateExchangeRateApp.class, args);
     }
 
-    // TODO: remove once historical data is fetched
+    // TODO: remove once initial historical data is fetched
     @PostConstruct
     public void getHistoricRates() {
-        for(long i=1; i<=15; i++) {
+        for(long i=1; i<=1; i++) {
                 job.getHistoricalRateForGivenDate(LocalDate.now(ZoneId.of("Europe/Berlin")).minus(i, ChronoUnit.DAYS));
         }
     }

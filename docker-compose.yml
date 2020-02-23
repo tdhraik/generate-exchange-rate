@@ -37,6 +37,12 @@ services:
       - 27017:27017
     restart: always
 
+  sm-config-server:
+    image: tarundhraik/sm-config-server
+    container_name: sm-config-server
+    ports:
+      - 8888:8888
+
   generate-exchange-rate:
     image: tarundhraik/generate-exchange-rate-service
     container_name: generate-exchange-rate
@@ -44,7 +50,9 @@ services:
       - 8193:8193
     depends_on:
       - kafka
-    restart: always
+      - sm-config-server
+    restart: on-failure
+
 
   get-exchange-rate:
     image: tarundhraik/get-exchange-rate-service
@@ -55,3 +63,5 @@ services:
       - kafka
       - mongodb
       - generate-exchange-rate
+    restart: on-failure
+

@@ -2,15 +2,21 @@ package com.searchmetrics.exchange.job;
 
 
 import com.searchmetrics.exchange.interactor.GenerateExchangeRateInteractor;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.concurrent.ScheduledFuture;
 
 
-@Configuration
+@Component
+@RefreshScope
 public class ExchangeRateJob {
+
+    @Value("${cron.job.exchange.rate.latest}")
+    private String cronExpLatestExchangeJob;
 
     private GenerateExchangeRateInteractor interactor;
 
@@ -18,10 +24,9 @@ public class ExchangeRateJob {
         this.interactor = interactor;
     }
 
-
-    @Scheduled(cron = "${cron.job.exchange.rate.latest}")
-    public void getLatestExchangeRate() {
-        System.out.println("Get latest exchange rate job started at " + LocalDateTime.now(ZoneId.of("Europe/Berlin")));
-        interactor.getLatestExchangeRate();
+    public ScheduledFuture<?> triggerGetLatestExchangeRateJob(TaskScheduler scheduler) {
+        return scheduler.schedule(
+                () -> interactor.getLatestExchangeRate(),
+                triggerContext -> new CronTrigger(cronExpLatestExchangeJob).nextExecutionTime(triggerContext));
     }
 }

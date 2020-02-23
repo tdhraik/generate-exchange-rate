@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: generate-exchange-rate
+
+  profiles:
+    active: default
+
+  cloud:
+    config:
+      uri: http://sm-config-server:8888

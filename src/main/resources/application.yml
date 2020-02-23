@@ -2,9 +2,10 @@ server:
   port: 8193
 
 coinlayer.exchange-rate:
-  access-key: 49e87ef90395432aa9694f2bbefbbde8 # 49631900db01ffefd3a8227c3fc64b4d
+  access-key: 49631900db01ffefd3a8227c3fc64b4d
   latest: http://api.coinlayer.com/api/live
   historical: http://api.coinlayer.com/api/
+
 
 spring:
   kafka:
@@ -19,5 +20,17 @@ cron:
   job:
     exchange:
       rate:
-        latest: 0 */1 * * * * # runs every 1 minute
-        historic: 0 0 3 * * ?  # runs at 3 AM every day
+        historic: 0 0 3 * * ?    # runs at 3 AM every day
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["info","metrics","health","env","refresh"]
+
+
+  endpoint:
+    env:
+      post:
+        enabled: true
+
